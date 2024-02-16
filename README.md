@@ -62,6 +62,13 @@ For a wifi connection use the next command line in your terminal:
 ``` sh
 nmcli device wifi connect <wirelles network name> password <network password>
 ```
+If you want set a fix ip address:
+``` sh
+nmcli con mod <wirelles network name> ipv4.addresses <fix ip address>
+nmcli con mod <wirelles network name> ipv4.gateway <gateway>
+nmcli con mod <wirelles network name> ipv4.dns “8.8.8.8”
+nmcli con mod <wirelles network name> ipv4.method manual
+```
 
 ### Changing user
 
@@ -93,6 +100,16 @@ mkdir git
 cd git
 sudo apt install git
 git clone git@github.com:LASER-Robotics/khadas_vim_setup.git" > run.sh && source run.sh
+```
+
+### Install and setup mrs_uav_system
+
+For this part you just need to run the script ./setup_mrs_uav_system.sh:
+
+``` sh
+cd /tmp
+echo "cd ~/git/khadas_vim_setup/miscellaneous
+./setup_mrs_uav_system.sh" > run.sh && source run.sh
 ```
 
 
