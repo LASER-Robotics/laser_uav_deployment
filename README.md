@@ -63,6 +63,27 @@ For a wifi connection use the next command line in your terminal:
 nmcli device wifi connect <wirelles network name> password <network password>
 ```
 
+### Changing user
+
+The operating system has a default user with the following login:
+
+```
+  login: khadas
+  password: khadas
+```
+
+Log in to this user and then paste the following code into the terminal:
+
+```sh
+cd /tmp
+echo "resp="" 
+[[ -t 0 ]] && { read -p $'\e[1;32mWhich uav is this (please choose a name from this template: uav<number>) :\e[0m\n' resp ; }
+old_user=$(whoami)
+sudo adduser "$resp"
+sudo usermod -aG sudo "$resp"
+sudo groupmod -n "$resp" "$old_user"" > run.sh && source run.sh                                                                              
+```
+
 From now on it is assumed that you managed to connect Ubuntu to the board and now it is necessary that you clone this repository. To do this, copy the next code and paste it into a terminal.  
 
 ``` sh
