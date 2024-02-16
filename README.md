@@ -44,7 +44,7 @@ With your board in upgrade mode, simply copy the following code into your termin
 ``` sh
 cd /tmp
 echo "cd ~/Documents/setup_khadas_vim_os
-burn-tool -v aml -b VIM3 -i ./" > run.sh && source run.sh
+burn-tool -v aml -b VIM3 -i ./vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425-emmc.img.xz" > run.sh && source run.sh
 ```
 
 ## In khadas vim
