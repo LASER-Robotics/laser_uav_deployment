@@ -4,10 +4,14 @@
 
 ### Configuring operating system
 
+It is possible to install the operating system in two ways using the Khadas internal memory or using an external SD card.
+
+### Using internal memory to storage OS
+
 #### 1 - Download image and tools for burn image on board
 
 In this first step we will format the board and put the Ubuntu 20 Linux distribution. 
-To download the image and the tools to carry out this task, simply copy the following code and paste it into a terminal on your PC with Ubuntu {any version}
+To download the image and the tools to carry out this task, simply copy the following code and paste it into a terminal on your PC with Ubuntu {any version}.
 
 ``` sh
 cd /tmp
@@ -45,6 +49,42 @@ With your board in upgrade mode, simply copy the following code into your termin
 cd /tmp
 echo "cd ~/Documents/setup_khadas_vim_os
 burn-tool -v aml -b VIM3 -i ./vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425-emmc.img.xz" > run.sh && source run.sh
+```
+### Using SD card to storage OS
+
+#### 1 - Download image
+
+In this first step we will format the SD card and put the Ubuntu 20 Linux distribution. 
+To download the image and the tools to carry out this task, simply copy the following code and paste it into a terminal on your PC with Ubuntu {any version}.
+
+``` sh
+cd /tmp
+echo "cd ~/Documents
+mkdir setup_khadas_vim_os
+cd setup_khadas_vim_os
+wget https://dl.khadas.com/products/vim3/firmware/ubuntu/generic/vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425.img.xz" > run.sh && source run.sh
+```
+
+#### 2 - Identify the name of your SD card in /dev {!!!!!!!!!! ATTENTION !!!!!!!!!!}
+
+To do this, simply copy the code below into your terminal.
+
+``` sh
+ls /dev
+```
+
+Then insert your SD card into the computer and again enter the command in your terminal.
+The new name that appears is the name of your SD card. Keep that name.
+
+#### 3 - Burn image in SD card
+
+Now let's burn the OS image onto the SD card, to do this just copy and paste the following code into the terminal.
+
+``` sh
+cd /tmp
+echo "cd ~/Documents
+cd setup_khadas_vim_os
+sudo dd if=./vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425.img.xz of=/dev/{Name of your SD card in the /dev folder} bs=1M && sync" > run.sh && source run.sh
 ```
 
 ## In khadas vim
