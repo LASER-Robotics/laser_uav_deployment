@@ -18,7 +18,7 @@ cd /tmp
 echo "cd ~/Documents
 mkdir setup_khadas_vim_os
 cd setup_khadas_vim_os
-wget https://dl.khadas.com/products/vim3/firmware/ubuntu/emmc/vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425-emmc.img.xz
+wget https://dl.khadas.com/products/vim3/firmware/ubuntu/emmc/vim3-ubuntu-22.04-gnome-linux-5.15-fenix-1.6.3-240112-emmc.img.xz
 sudo apt-get install libusb-dev git parted
 git clone https://github.com/khadas/utils
 cd utils
@@ -48,7 +48,7 @@ With your board in upgrade mode, simply copy the following code into your termin
 ``` sh
 cd /tmp
 echo "cd ~/Documents/setup_khadas_vim_os
-burn-tool -v aml -b VIM3 -i ./vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425-emmc.img.xz" > run.sh && source run.sh
+burn-tool -v aml -b VIM3 -i ./vim3-ubuntu-22.04-gnome-linux-5.15-fenix-1.6.3-240112-emmc.img.xz" > run.sh && source run.sh
 ```
 ### Using SD card to storage OS
 
@@ -62,7 +62,7 @@ cd /tmp
 echo "cd ~/Documents
 mkdir setup_khadas_vim_os
 cd setup_khadas_vim_os
-wget https://dl.khadas.com/products/vim3/firmware/ubuntu/generic/vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425.img.xz" > run.sh && source run.sh
+wget https://dl.khadas.com/products/vim3/firmware/ubuntu/generic/vim3-ubuntu-22.04-gnome-linux-6.1-fenix-1.4-221229.img.xz" > run.sh && source run.sh
 ```
 
 #### 2 - Identify the name of your SD card in /dev {!!!!!!!!!! ATTENTION !!!!!!!!!!}
@@ -84,7 +84,7 @@ Now let's burn the OS image onto the SD card, to do this just copy and paste the
 cd /tmp
 echo "cd ~/Documents
 cd setup_khadas_vim_os
-sudo dd if=./vim3-ubuntu-20.04-gnome-linux-4.9-fenix-1.5-230425.img.xz of=/dev/{Name of your SD card in the /dev folder} bs=1M && sync" > run.sh && source run.sh
+sudo dd if=./vim3-ubuntu-22.04-gnome-linux-6.1-fenix-1.4-221229.img.xz of=/dev/{Name of your SD card in the /dev folder} bs=1M && sync" > run.sh && source run.sh
 ```
 
 ## In khadas vim
