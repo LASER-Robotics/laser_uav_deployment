@@ -131,25 +131,31 @@ sudo usermod -aG sudo "$resp"
 sudo groupmod -n "$resp" "$old_user"" > run.sh && source run.sh                                                                              
 ```
 
-From now on it is assumed that you managed to connect Ubuntu to the board and now it is necessary that you clone this repository. To do this, copy the next code and paste it into a terminal.  
+### Configurate ssh key on github
+
+Now let's configure your ssh key so you can download private repositories, to do this copy and paste the code below into your terminal.
 
 ``` sh
 cd /tmp
-echo "cd ~/
-mkdir git
-cd git
-sudo apt install git
-git clone git@github.com:LASER-Robotics/khadas_vim_setup.git" > run.sh && source run.sh
+echo "resp="" 
+[[ -t 0 ]] && { read -p $'\e[1;32mWhat is your github account email? :\e[0m\n' resp ; }
+ssh-keygen -t rsa -b 4096 -C $resp
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub
+[[ -t 0 ]] && { read -p $'\e[1;32mAfter copying and pasting the key above into your github account, press enter :\e[0m\n' ; }" > run.sh && source run.sh
 ```
 
-### Install and setup mrs_uav_system
+### Install and setup laser_uav_system
 
-For this part you just need to run the script ./setup_mrs_uav_system.sh:
+For this part you just copy and paste the code below into your terminal.
 
 ``` sh
 cd /tmp
-echo "cd ~/git/khadas_vim_setup/miscellaneous
-./setup_mrs_uav_system.sh" > run.sh && source run.sh
+echo "mkdir ~/git
+cd ~/git
+git clone git@github.com:LASER-Robotics/laser_uav_system.git
+./laser_uav_system/install.sh" > run.sh && source run.sh
 ```
 
 
