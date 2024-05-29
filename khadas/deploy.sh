@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ../../miscellaneous/computer_setup/configurate_uav_constants_in_bash.sh
 source ~/.bashrc
 ../miscellaneous/add_uav_user.sh

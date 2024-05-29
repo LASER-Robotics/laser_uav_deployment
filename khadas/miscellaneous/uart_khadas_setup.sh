@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Configure uart overlay gpio"
 
 sudo rm -r /boot/dtb/amlogic/kvim3.dtb.overlay.env

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Configure git and add ssh key on github"
 
 resp="" 

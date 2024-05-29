@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Configure network"
 
 net_id="" 

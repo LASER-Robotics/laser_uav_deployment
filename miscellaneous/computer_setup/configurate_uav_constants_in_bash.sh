@@ -1,3 +1,7 @@
+#!/bin/bash
+
+echo "Configure bash constants for real uav"
+
 if [ $(grep -c "UAV_NAME" ~/.bashrc) -ne 1 ]; then
   resp=""
   [[ -t 0 ]] && { read -p $'\e[1;32mWhich uav is this (please choose a name from this template: uav<number>) :\e[0m\n' resp ; }

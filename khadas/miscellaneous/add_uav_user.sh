@@ -1,3 +1,5 @@
+#!/bin/bash
+
 old_user=$(whoami)
 
 sudo adduser "$UAV_NAME"
