@@ -1,4 +1,4 @@
-# khadas vim setup
+# khadas setup
 
 ## In your desktop
 
@@ -87,75 +87,24 @@ cd setup_khadas_vim_os
 sudo dd if=./vim3-ubuntu-22.04-gnome-linux-6.1-fenix-1.4-221229.img.xz of=/dev/{Name of your SD card in the /dev folder} bs=1M && sync" > run.sh && source run.sh
 ```
 
-## In khadas vim
+## Sending this package to khadas
 
-### Configuring network
-
-#### Ethernet connection
-
-For connection via ethernet cable, the connection is made in a plug and play way.  
-
-#### Wifi connection
-
-For a wifi connection use the next command line in your terminal:
-
-``` sh
-nmcli device wifi connect <wirelles network name> password <network password>
-```
-If you want set a fix ip address:
-``` sh
-nmcli con mod <wirelles network name> ipv4.addresses <fix ip address>
-nmcli con mod <wirelles network name> ipv4.gateway <gateway>
-nmcli con mod <wirelles network name> ipv4.dns “8.8.8.8”
-nmcli con mod <wirelles network name> ipv4.method manual
-```
-
-### Changing user
-
-The operating system has a default user with the following login:
-
-```
-  login: khadas
-  password: khadas
-```
-
-Log in to this user and then paste the following code into the terminal:
-
-```sh
-cd /tmp
-echo "resp="" 
-[[ -t 0 ]] && { read -p $'\e[1;32mWhich uav is this (please choose a name from this template: uav<number>) :\e[0m\n' resp ; }
-old_user=$(whoami)
-sudo adduser "$resp"
-sudo usermod -aG sudo "$resp"
-sudo groupmod -n "$resp" "$old_user"" > run.sh && source run.sh                                                                              
-```
-
-### Configurate ssh key on github
-
-Now let's configure your ssh key so you can download private repositories, to do this copy and paste the code below into your terminal.
-
-``` sh
-cd /tmp
-echo "resp="" 
-[[ -t 0 ]] && { read -p $'\e[1;32mWhat is your github account email? :\e[0m\n' resp ; }
-ssh-keygen -t rsa -b 4096 -C $resp
-eval $(ssh-agent -s)
-ssh-add ~/.ssh/id_rsa
-cat ~/.ssh/id_rsa.pub
-[[ -t 0 ]] && { read -p $'\e[1;32mAfter copying and pasting the key above into your github account, press enter :\e[0m\n' ; }" > run.sh && source run.sh
-```
-
-### Install and setup laser_uav_system
-
-For this part you just copy and paste the code below into your terminal.
+First we will clone this repository and then we will send it via scp to khadas, to do this just copy and paste the following code into the terminal.
 
 ``` sh
 cd /tmp
 echo "mkdir ~/git
 cd ~/git
-git clone git@github.com:LASER-Robotics/laser_uav_system.git
-./laser_uav_system/install.sh" > run.sh && source run.sh
+git clone git@github.com:LASER-Robotics/laser_uav_deployment.git
+scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" run.sh && source run.sh
+```
+
+## In Khadas
+
+Run the khadas deploy file and answer the questions for a successful configuration, to do this just copy and paste the following code into the terminal.
+
+``` sh
+cd ~/laser_uav_system/khadas/deploy.sh
 ```
 
 
