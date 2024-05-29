@@ -101,8 +101,19 @@ scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" run.sh && source ru
 
 ## In Khadas
 
-Run the khadas deploy file and answer the questions for a successful configuration, to do this just copy and paste the following code into the terminal.
+First we need to add the new uav user to the OS, to do this just copy and paste the following code into the terminal.
 
 ``` sh
-cd ~/laser_uav_deployment/khadas/deploy.sh
+cd /tmp
+echo "cd ~/laser_uav_deployment/khadas/miscellaneous
+./add_uav_user.sh" run.sh && source run.sh
+```
+Now log out and login to the new user created.
+
+Finally run the khadas deploy file and answer the questions for a successful configuration, to do this just copy and paste the following code into the terminal.
+
+``` sh
+cd /tmp
+echo "cd ~/laser_uav_deployment/khadas/
+./deploy.sh" run.sh && source run.sh
 ```
