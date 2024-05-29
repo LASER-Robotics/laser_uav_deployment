@@ -104,5 +104,5 @@ scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" run.sh && source ru
 Run the khadas deploy file and answer the questions for a successful configuration, to do this just copy and paste the following code into the terminal.
 
 ``` sh
-cd ~/laser_uav_system/khadas/deploy.sh
+cd ~/laser_uav_deployment/khadas/deploy.sh
 ```
