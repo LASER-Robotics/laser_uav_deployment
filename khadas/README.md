@@ -10,7 +10,7 @@ It is possible to install the operating system in two ways using the Khadas inte
 
 #### 1 - Download image and tools for burn image on board
 
-In this first step we will format the board and put the Ubuntu 20 Linux distribution. 
+In this first step we will format the board and put the Ubuntu 22 Linux distribution. 
 To download the image and the tools to carry out this task, simply copy the following code and paste it into a terminal on your PC with Ubuntu {any version}.
 
 ``` sh
@@ -106,5 +106,3 @@ Run the khadas deploy file and answer the questions for a successful configurati
 ``` sh
 cd ~/laser_uav_system/khadas/deploy.sh
 ```
-
-
