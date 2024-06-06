@@ -96,7 +96,7 @@ cd /tmp
 echo "mkdir ~/git
 cd ~/git
 git clone git@github.com:LASER-Robotics/laser_uav_deployment.git
-scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" run.sh && source run.sh
+scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" > run.sh && source run.sh
 ```
 
 ## In Khadas
@@ -106,7 +106,7 @@ First we need to add the new uav user to the OS, to do this just copy and paste 
 ``` sh
 cd /tmp
 echo "cd ~/laser_uav_deployment/khadas/miscellaneous
-./add_uav_user.sh" run.sh && source run.sh
+./add_uav_user.sh" > run.sh && source run.sh
 ```
 Now log out and login to the new user created.
 
@@ -115,5 +115,5 @@ Finally run the khadas deploy file and answer the questions for a successful con
 ``` sh
 cd /tmp
 echo "cd ~/laser_uav_deployment/khadas/
-./deploy.sh" run.sh && source run.sh
+./deploy.sh" > run.sh && source run.sh
 ```
