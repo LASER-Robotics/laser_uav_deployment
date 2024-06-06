@@ -114,6 +114,6 @@ Finally run the khadas deploy file and answer the questions for a successful con
 
 ``` sh
 cd /tmp
-echo "cd ~/laser_uav_deployment/khadas/
+echo "cd ~/git/laser_uav_deployment/khadas/
 ./deploy.sh" > run.sh && source run.sh
 ```
