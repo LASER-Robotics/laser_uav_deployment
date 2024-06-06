@@ -96,7 +96,7 @@ cd /tmp
 echo "mkdir ~/git
 cd ~/git
 git clone git@github.com:LASER-Robotics/laser_uav_deployment.git
-scp ./laser_uav_deployment khadas@{change for khadas ip}:~/" > run.sh && source run.sh
+scp -r ./laser_uav_deployment khadas@{change for khadas ip}:~/" > run.sh && source run.sh
 ```
 
 ## In Khadas
