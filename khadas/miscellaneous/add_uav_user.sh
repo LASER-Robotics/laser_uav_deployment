@@ -13,6 +13,3 @@ sudo rm -r /etc/hostname
 sudo touch /etc/hostname
 sudo echo "$resp" > /etc/hostname
 
-sudo mkdir /home/"$resp"/git
-
-sudo mv /home/"$old_user"/laser_uav_deployment /home/"$resp"/git/laser_uav_deployment
