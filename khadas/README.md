@@ -87,7 +87,31 @@ cd setup_khadas_vim_os
 sudo dd if=./vim3-ubuntu-22.04-gnome-linux-6.1-fenix-1.4-221229.img.xz of=/dev/{Name of your SD card in the /dev folder} bs=1M && sync" > run.sh && source run.sh
 ```
 
-## Sending this package to khadas
+## In Khadas
+
+First we need to add the new uav user to the OS, to do this just copy and paste the following code into the terminal.
+
+``` sh
+cd /tmp
+echo "resp=""
+[[ -t 0 ]] && { read -p $'\e[1;32mWhich uav is this (please choose a name from this template: uav<number>) :\e[0m\n' resp ; }
+
+old_user=$(whoami)
+
+sudo adduser "$resp"
+sudo usermod -aG sudo "$resp"
+sudo groupmod -n "$resp" "$old_user"
+
+sudo rm -r /etc/hostname
+sudo touch /etc/hostname
+sudo echo "$resp" > /etc/hostname
+" > run.sh && source run.sh
+```
+Now log out and login to the new user created.
+
+## In your desktop
+
+### Sending this package to khadas
 
 First we will clone this repository and then we will send it via scp to khadas, to do this just copy and paste the following code into the terminal.
 
@@ -96,19 +120,10 @@ cd /tmp
 echo "mkdir ~/git
 cd ~/git
 git clone git@github.com:LASER-Robotics/laser_uav_deployment.git
-scp -r ./laser_uav_deployment khadas@{change for khadas ip}:~/" > run.sh && source run.sh
+scp -r ./laser_uav_deployment {new user created}@{change for khadas ip}:~/" > run.sh && source run.sh
 ```
 
 ## In Khadas
-
-First we need to add the new uav user to the OS, to do this just copy and paste the following code into the terminal.
-
-``` sh
-cd /tmp
-echo "cd ~/laser_uav_deployment/khadas/miscellaneous
-./add_uav_user.sh" > run.sh && source run.sh
-```
-Now log out and login to the new user created.
 
 Finally run the khadas deploy file and answer the questions for a successful configuration, to do this just copy and paste the following code into the terminal.
 
