@@ -1,0 +1,1 @@
+uxrce_dds_client start -t serial -d /dev/ttyS3 -b 921600 -n uav5

@@ -1,0 +1,20 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      dhcp6: no
+      addresses: ["ethernet_ip"/24]
+  wifis:
+    wlan0:
+      dhcp4: no
+      dhcp6: no
+      addresses: ["wifi_ip"/24]
+      gateway4: "wifi_gateway"
+      access-points:
+        "wifi_id":
+          password: "wifi_pass"
+      nameservers:
+        addresses: [8.8.8.8]
+        

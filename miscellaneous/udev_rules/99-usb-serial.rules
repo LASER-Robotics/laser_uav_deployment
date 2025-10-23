@@ -1,0 +1,11 @@
+# Pixhawk
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6011", ENV{ID_USB_INTERFACE_NUM}=="02", SYMLINK+="pixhawk",OWNER="lus",MODE="0666"
+
+
+
+
+
+
+
+
+
