@@ -1,7 +1,0 @@
-param set-default UXRCE_DDS_CFG 102
-param set-default UXRCE_DDS_DOM_ID 1
-param set-default SER_TEL2_BAUD 921600
-param set-default DSHOT_TEL_CFG 103
-param set-default MAV0_CONFIG 101
-param set-default MAV1_CONFIG 103
-param set-default MAV2_CONFIG 0
