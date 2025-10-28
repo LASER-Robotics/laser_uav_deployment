@@ -1,1 +1,2 @@
-miscellaneous/pixhawk/sdcard_config/*
+miscellaneous/pixhawk/sdcard_config/etc/extras.txt
+miscellaneous/pixhawk/sdcard_config/etc/config.txt
