@@ -55,7 +55,7 @@ def lr7pro(context: launch.LaunchContext, ld):
     if '--enable_d435i_front' in uav_sensors:
         # #{ realsense_front
         front_rgbd_frame = uav_name + '/front_rgbd/link'
-        front_rgbd_frame_slashless = uav_name + '_' + 'front_rbgd_link'
+        front_rgbd_frame_slashless = uav_name + '_' + 'front_rgbd_link'
 
         # #{ static_transform_publisher
         fcu_to_front_rgbd_tf_static_publisher_node = Node(
@@ -63,7 +63,7 @@ def lr7pro(context: launch.LaunchContext, ld):
             executable='static_transform_publisher',
             namespace=uav_name,
             name=TextSubstitution(text=fcu_frame_slashless + '_to_' + front_rgbd_frame_slashless),
-            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rbgd_frame],
+            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rgbd_frame],
             output='screen'
         )
         ld.add_action(fcu_to_front_rgbd_tf_static_publisher_node)
@@ -73,7 +73,7 @@ def lr7pro(context: launch.LaunchContext, ld):
         front_rgbd_driver_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([
-                    FindPackageShare('realsense_camera2'),
+                    FindPackageShare('realsense2_camera'),
                     'launch',
                     'rs_camera.launch.py',
                 ])
@@ -128,7 +128,7 @@ def x500(context: launch.LaunchContext, ld):
     if '--enable_d435i_front' in uav_sensors:
         # #{ realsense_front
         front_rgbd_frame = uav_name + '/front_rgbd/link'
-        front_rgbd_frame_slashless = uav_name + '_' + 'front_rbgd_link'
+        front_rgbd_frame_slashless = uav_name + '_' + 'front_rgbd_link'
 
         # #{ static_transform_publisher
         fcu_to_front_rgbd_tf_static_publisher_node = Node(
@@ -136,7 +136,7 @@ def x500(context: launch.LaunchContext, ld):
             executable='static_transform_publisher',
             name=TextSubstitution(text=fcu_frame_slashless + '_to_' + front_rgbd_frame_slashless),
             namespace=uav_name,
-            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rbgd_frame],
+            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rgbd_frame],
             output='screen'
         )
         ld.add_action(fcu_to_front_rgbd_tf_static_publisher_node)
@@ -146,7 +146,7 @@ def x500(context: launch.LaunchContext, ld):
         front_rgbd_driver_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([
-                    FindPackageShare('realsense_camera2'),
+                    FindPackageShare('realsense2_camera'),
                     'launch',
                     'rs_camera.launch.py',
                 ])
@@ -162,7 +162,7 @@ def x500(context: launch.LaunchContext, ld):
     if '--enable_d435i_down' in uav_sensors:
         # #{ realsense_down
         down_rgbd_frame = uav_name + '/down_rgbd/link'
-        down_rgbd_frame_slashless = uav_name + '_' + 'down_rbgd_link'
+        down_rgbd_frame_slashless = uav_name + '_' + 'down_rgbd_link'
 
         # #{ static_transform_publisher
         fcu_to_down_rgbd_tf_static_publisher_node = Node(
@@ -170,7 +170,7 @@ def x500(context: launch.LaunchContext, ld):
             executable='static_transform_publisher',
             name=TextSubstitution(text=fcu_frame_slashless + '_to_' + down_rgbd_frame_slashless),
             namespace=uav_name,
-            arguments=['0.07', '0.0', '-0.1', '0.0', '1.57', '0.0', fcu_frame, down_rbgd_frame],
+            arguments=['0.07', '0.0', '-0.1', '0.0', '1.57', '0.0', fcu_frame, down_rgbd_frame],
             output='screen'
         )
         ld.add_action(fcu_to_down_rgbd_tf_static_publisher_node)
@@ -180,7 +180,7 @@ def x500(context: launch.LaunchContext, ld):
         down_rgbd_driver_launch = IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
                 PathJoinSubstitution([
-                    FindPackageShare('realsense_camera2'),
+                    FindPackageShare('realsense2_camera'),
                     'launch',
                     'rs_camera.launch.py',
                 ])
