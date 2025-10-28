@@ -59,7 +59,6 @@ def lr7pro(context: launch.LaunchContext, ld):
         fcu_to_front_rgbd_tf_static_publisher_node = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            name='front_rbgd_tf',
             namespace=uav_name,
             name=TextSubstitution(text=fcu_frame_slashless + '_to_' + front_rgbd_frame_slashless),
             arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rbgd_frame],
