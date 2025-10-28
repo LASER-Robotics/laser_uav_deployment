@@ -77,10 +77,9 @@ def lr7pro(context: launch.LaunchContext, ld):
                     'rs_camera.launch.py',
                 ])
             ]),
-            # Opcional: descomente para passar argumentos para o launch incluído
-            # launch_arguments={
-            #    'argumento_para_outro_launch': 'valor_desse_argumento'
-            # }.items()
+            launch_arguments={
+               'camera_name': 'front_rgbd'
+            }.items()
         )
         ld.add_action(front_rgbd_driver_launch)
         # #}
@@ -151,10 +150,9 @@ def x500(context: launch.LaunchContext, ld):
                     'rs_camera.launch.py',
                 ])
             ]),
-            # Opcional: descomente para passar argumentos para o launch incluído
-            # launch_arguments={
-            #    'argumento_para_outro_launch': 'valor_desse_argumento'
-            # }.items()
+            launch_arguments={
+               'camera_name': 'front_rgbd'
+            }.items()
         )
         ld.add_action(front_rgbd_driver_launch)
         # #}
@@ -186,10 +184,9 @@ def x500(context: launch.LaunchContext, ld):
                     'rs_camera.launch.py',
                 ])
             ]),
-            # Opcional: descomente para passar argumentos para o launch incluído
-            # launch_arguments={
-            #    'argumento_para_outro_launch': 'valor_desse_argumento'
-            # }.items()
+            launch_arguments={
+               'camera_name': 'down_rgbd'
+            }.items()
         )
         ld.add_action(down_rgbd_driver_launch)
         # #}
