@@ -8,6 +8,8 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Text
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 
+import os
+
 def lr7pro(context: launch.LaunchContext, ld):
     uav_name = os.environ['UAV_NAME']
     uav_sensors = os.environ['UAV_SENSORS']
