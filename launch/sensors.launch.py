@@ -43,7 +43,8 @@ def launch_setup(context: launch.LaunchContext, ld):
             sensor_frame = uav_name + '/' + sensor.get('name', '') + '/link'
             sensor_frame_slashless = uav_name + '_' + sensor.get('name', '') + '_link'
 
-            transform = sensor.get('transform', [])
+           transform = sensor.get('transform', [])
+           transofrm = [str(i) for i in transform]
 
             fcu_to_sensor_tf_static_publisher_node = Node(
                 package='tf2_ros',
