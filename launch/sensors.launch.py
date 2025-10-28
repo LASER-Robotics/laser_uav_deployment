@@ -6,6 +6,7 @@ from launch.actions import ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.actions import Node
 
 import os
 
@@ -42,7 +43,7 @@ def launch_setup(context: launch.LaunchContext, ld):
             sensor_frame = uav_name + '/' + sensor.get('name', '') + '/link'
             sensor_frame_slashless = uav_name + '_' + sensor.get('name', '') + '_link'
 
-            transform = uav.get('transform', [])
+            transform = sensor.get('transform', [])
 
             fcu_to_sensor_tf_static_publisher_node = Node(
                 package='tf2_ros',
