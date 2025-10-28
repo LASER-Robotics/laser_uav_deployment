@@ -1,219 +1,107 @@
 import launch
-import launch.logging
+import yaml
 
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.actions import ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 from launch_ros.substitutions import FindPackageShare
-from launch_ros.actions import Node
 
 import os
 
-def lr7pro(context: launch.LaunchContext, ld):
+def launch_setup(context: launch.LaunchContext, ld):
+    # #{ spawn drone config
+
+    config_file_path = LaunchConfiguration('sensors_start_file').perform(context)
+
+    # #}
+
+    # #{ iterate file config and start the driver and static tf for each sensor
+
+    try:
+        with open(config_file_path, 'r') as file:
+            config_data = yaml.safe_load(file)['/**/**']
+    except EnvironmentError:
+        print(f"Error: Can't find the config file in '{config_file_path}'")
+        return None
+    except KeyError:
+        print(f"Error: The key '/**/**' don't exist in YAML.")
+        return None
+
+    sensors = (config_data.get('ros__parameters', {})).get('sensors', {})
+
+    sensors_available = ['realsense', 'livox']
+
     uav_name = os.environ['UAV_NAME']
-    uav_sensors = os.environ['UAV_SENSORS']
-    uav_sensors = uav_sensors.split()
 
-    fcu_frame = uav_name + '/fcu'
-    fcu_frame_slashless = 'fcu_' + uav_name
+    for sensor in sensors:
+        if sensor.get('type', '') in sensors_available:
+            fcu_frame = uav_name + '/fcu'
+            fcu_frame_slashless = 'fcu_' + uav_name
 
-    if '--enable_livox' in uav_sensors:
-        # #{ livox
-        livox_frame = uav_name + '/livox/link'
-        livox_frame_slashless = uav_name + '_' + 'livox_link'
+            sensor_frame = uav_name + '/' + sensor.get('name', '') + '/link'
+            sensor_frame_slashless = uav_name + '_' + sensor.get('name', '') + '_link'
 
-        # #{ static_transform_publisher
-        fcu_to_livox_tf_static_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name=TextSubstitution(text=fcu_frame_slashless + '_to_' + livox_frame_slashless),
-            arguments=['0.0', '0.0', '0.18', '0.0', '0.0', '0.0', fcu_frame, livox_frame],
-            output='screen'
-        )
-        ld.add_action(fcu_to_livox_tf_static_publisher_node)
-        # #}
+            transform = uav.get('transform', [])
 
-        # #{ include other launch
-        livox_driver_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('livox_ros_driver2'),
-                    'launch',
-                    'msg_MID360_launch.py'
-                ])
-            ]),
-            # Opcional: descomente para passar argumentos para o launch incluído
-            # launch_arguments={
-            #    'argumento_para_outro_launch': 'valor_desse_argumento'
-            # }.items()
-        )
-        ld.add_action(livox_driver_launch)
-        # #}
-        # #}
+            fcu_to_sensor_tf_static_publisher_node = Node(
+                package='tf2_ros',
+                executable='static_transform_publisher',
+                name=TextSubstitution(text=fcu_frame_slashless + '_to_' + sensor_frame_slashless),
+                namespace=uav_name,
+                arguments=[transform[0], transform[1], transform[2], transform[3], transform[4], transform[5], fcu_frame, sensor_frame],
+                output='screen'
+            )
+            ld.add_action(fcu_to_sensor_tf_static_publisher_node)
 
-    if '--enable_d435i_front' in uav_sensors:
-        # #{ realsense_front
-        front_rgbd_frame = uav_name + '/front_rgbd/link'
-        front_rgbd_frame_slashless = uav_name + '_' + 'front_rgbd_link'
+            launch_arguments = {}
+            if 'realsense' == sensor.get('type', ""):
+                package = 'realsense2_camera'
+                launch_name = 'rs_camera.launch.py'
+                launch_arguments={
+                    'camera_name': sensor.get('name', '')
+                }
+            if 'livox' == sensor.get('type', ""):
+                package = 'livox_ros_driver2'
+                launch_name = 'msg_MID360_launch.py'
+                launch_arguments={
+                    'livox_name': sensor.get('name', '')
+                }
 
-        # #{ static_transform_publisher
-        fcu_to_front_rgbd_tf_static_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            namespace=uav_name,
-            name=TextSubstitution(text=fcu_frame_slashless + '_to_' + front_rgbd_frame_slashless),
-            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rgbd_frame],
-            output='screen'
-        )
-        ld.add_action(fcu_to_front_rgbd_tf_static_publisher_node)
-        # #}
-
-        # #{ include other launch
-        front_rgbd_driver_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('realsense2_camera'),
-                    'launch',
-                    'rs_camera.launch.py',
-                ])
-            ]),
-            launch_arguments={
-               'camera_name': 'front_rgbd'
-            }.items()
-        )
-        ld.add_action(front_rgbd_driver_launch)
-        # #}
-        # #}
-
-def x500(context: launch.LaunchContext, ld):
-    uav_name = os.environ['UAV_NAME']
-    uav_sensors = os.environ['UAV_SENSORS']
-    uav_sensors = uav_sensors.split()
-
-    fcu_frame = uav_name + '/fcu'
-    fcu_frame_slashless = 'fcu_' + uav_name
-
-    if '--enable_livox' in uav_sensors:
-        # #{ livox
-        livox_frame = uav_name + '/livox/link'
-        livox_frame_slashless = uav_name + '_' + 'livox_link'
-
-        # #{ static_transform_publisher
-        fcu_to_livox_tf_static_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name=TextSubstitution(text=fcu_frame_slashless + '_to_' + livox_frame_slashless),
-            namespace=uav_name,
-            arguments=['0.0', '0.0', '0.18', '0.0', '0.0', '0.0', fcu_frame, livox_frame],
-            output='screen'
-        )
-        ld.add_action(fcu_to_livox_tf_static_publisher_node)
-        # #}
-
-        # #{ include other launch
-        livox_driver_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('livox_ros_driver2'),
-                    'launch',
-                    'msg_MID360_launch.py'
-                ])
-            ]),
-        )
-        ld.add_action(livox_driver_launch)
-        # #}
-        # #}
-
-    if '--enable_d435i_front' in uav_sensors:
-        # #{ realsense_front
-        front_rgbd_frame = uav_name + '/front_rgbd/link'
-        front_rgbd_frame_slashless = uav_name + '_' + 'front_rgbd_link'
-
-        # #{ static_transform_publisher
-        fcu_to_front_rgbd_tf_static_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name=TextSubstitution(text=fcu_frame_slashless + '_to_' + front_rgbd_frame_slashless),
-            namespace=uav_name,
-            arguments=['0.07', '0.0', '-0.1', '0.0', '0.0', '0.0', fcu_frame, front_rgbd_frame],
-            output='screen'
-        )
-        ld.add_action(fcu_to_front_rgbd_tf_static_publisher_node)
-        # #}
-
-        # #{ include other launch
-        front_rgbd_driver_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('realsense2_camera'),
-                    'launch',
-                    'rs_camera.launch.py',
-                ])
-            ]),
-            launch_arguments={
-               'camera_name': 'front_rgbd'
-            }.items()
-        )
-        ld.add_action(front_rgbd_driver_launch)
-        # #}
-        # #}
-
-    if '--enable_d435i_down' in uav_sensors:
-        # #{ realsense_down
-        down_rgbd_frame = uav_name + '/down_rgbd/link'
-        down_rgbd_frame_slashless = uav_name + '_' + 'down_rgbd_link'
-
-        # #{ static_transform_publisher
-        fcu_to_down_rgbd_tf_static_publisher_node = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name=TextSubstitution(text=fcu_frame_slashless + '_to_' + down_rgbd_frame_slashless),
-            namespace=uav_name,
-            arguments=['0.07', '0.0', '-0.1', '0.0', '1.57', '0.0', fcu_frame, down_rgbd_frame],
-            output='screen'
-        )
-        ld.add_action(fcu_to_down_rgbd_tf_static_publisher_node)
-        # #}
-
-        # #{ driver_launch
-        down_rgbd_driver_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('realsense2_camera'),
-                    'launch',
-                    'rs_camera.launch.py',
-                ])
-            ]),
-            launch_arguments={
-               'camera_name': 'down_rgbd'
-            }.items()
-        )
-        ld.add_action(down_rgbd_driver_launch)
-        # #}
-        # #}
+            sensor_driver_launch = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([
+                    PathJoinSubstitution([
+                        FindPackageShare(package),
+                        'launch',
+                        launch_name
+                    ])
+                ]),
+                launch_arguments=launch_arguments.items()
+            )
+            ld.add_action(sensor_driver_launch)
+        else:
+            print(f"Error: Don't have support for this sensor.")
+    # #}
 
 def generate_launch_description():
-    uav_type = os.environ['UAV_TYPE']
-
     ld = launch.LaunchDescription()
 
-    if uav_type == 'x500':
-        # #{ opaque function (Sua lógica original permanece)
-        ld.add_action(
-            OpaqueFunction(function=x500, args=[ld])
-        )
-        # #}
-    elif uav_type == 'lr7pro':
-        # #{ opaque function (Sua lógica original permanece)
-        ld.add_action(
-            OpaqueFunction(function=lr7pro, args=[ld])
-        )
-        # #}
-    else:
-        g_logger = launch.logging.get_logger('sensors.launch')
-        g_logger.error(f"Dont't exist preset sensors configuration for this uav type: '{uav_type}'")
+    # #{ sensors start config
+    
+    ld.add_action(DeclareLaunchArgument(
+        'sensors_start_file',
+        default_value='',
+        description='Path to config file for start sensors.'
+    ))
+    
+    # #}
 
-
+    # #{ opaque function
+    
+    ld.add_action(
+        OpaqueFunction(function=launch_setup, args=[ld])
+    )
+    
+    # #}
 
     return ld

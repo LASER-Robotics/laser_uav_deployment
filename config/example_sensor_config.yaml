@@ -1,0 +1,11 @@
+/**/**:
+  ros__parameters:
+    sensors:
+      - name: "livox_up"
+        type: "livox"
+        transform: [0.0,0.0,0.14,0.0,0.0,0.0] # x y z r p y
+      
+      - name: "realsense_front"
+        type: "realsense"
+        transform: [0.08,0.0,0.0,0.0,0.0,0.0]
+
