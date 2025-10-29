@@ -62,6 +62,7 @@ def launch_setup(context: launch.LaunchContext, ld):
                 launch_name = 'rs_camera.launch.py'
                 launch_arguments={
                     'camera_name': sensor.get('name', '')
+                    'camera_params_file': sensor.get('config_file_path', PathJoinSubstitution([FindPackageShare(package), 'params', 'default.yaml']))
                 }
             if 'livox' == sensor.get('type', ""):
                 package = 'livox_ros_driver2'
