@@ -8,7 +8,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 from launch_ros.substitutions import FindPackageShare
 
-def check_if_uxrce_is_running:
+def check_if_uxrce_is_running():
     process_filter = "MicroXRCEAgent"
     cmd = ['ps', 'aux']
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)    
@@ -26,7 +26,7 @@ def launch_setup(context: launch.LaunchContext, ld):
     serial_port = LaunchConfiguration('serial_port')
     # #}
 
-    if(check_if_uxrce_is_running()):
+    if(not check_if_uxrce_is_running()):
         # #{ start uxrce protocol
         uxrce_script_cmd = ExecuteProcess(
             cmd=["sudo" ,"MicroXRCEAgent", "serial", "--dev", serial_port.perform(context), "-b", "2000000"],
