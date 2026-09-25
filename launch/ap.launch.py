@@ -45,7 +45,7 @@ def launch_setup(context: launch.LaunchContext, ld):
                 "serial",
                 "-v4",
                 "-b",
-                "115200",
+                "2000000",
                 "-D",
                 serial_port.perform(context),
             ],
