@@ -1,14 +1,19 @@
-import launch
-import yaml
-
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
-from launch.actions import ExecuteProcess
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
-from launch_ros.substitutions import FindPackageShare
-from launch_ros.actions import Node
-
 import os
+
+import yaml
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+import launch
+from launch.actions import DeclareLaunchArgument
+from launch.actions import ExecuteProcess
+from launch.actions import IncludeLaunchDescription
+from launch.actions import OpaqueFunction
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution
+from launch.substitutions import TextSubstitution
+
 
 def launch_setup(context: launch.LaunchContext, ld):
     # #{ spawn drone config
@@ -31,7 +36,7 @@ def launch_setup(context: launch.LaunchContext, ld):
 
     sensors = (config_data.get('ros__parameters', {})).get('sensors', {})
 
-    sensors_available = ['realsense', 'livox']
+    sensors_available = ['realsense', 'livox', 'lx_camera']
 
     uav_name = os.environ['UAV_NAME']
 
@@ -43,7 +48,7 @@ def launch_setup(context: launch.LaunchContext, ld):
             sensor_frame = uav_name + '/' + sensor.get('name', '') + '/link'
             sensor_frame_slashless = uav_name + '_' + sensor.get('name', '') + '_link'
 
-            transform = sensor.get('transform', [0.0,0.0,0.0,0.0,0.0,0.0])
+            transform = sensor.get('transform', [0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
             transform = [str(i) for i in transform]
 
             fcu_to_sensor_tf_static_publisher_node = Node(
@@ -51,7 +56,8 @@ def launch_setup(context: launch.LaunchContext, ld):
                 executable='static_transform_publisher',
                 name=TextSubstitution(text=fcu_frame_slashless + '_to_' + sensor_frame_slashless),
                 namespace=uav_name,
-                arguments=[transform[0], transform[1], transform[2], transform[3], transform[4], transform[5], fcu_frame, sensor_frame],
+                arguments=[transform[0], transform[1], transform[2], transform[3],
+                           transform[4], transform[5], fcu_frame, sensor_frame],
                 output='screen'
             )
             ld.add_action(fcu_to_sensor_tf_static_publisher_node)
@@ -60,15 +66,22 @@ def launch_setup(context: launch.LaunchContext, ld):
             if 'realsense' == sensor.get('type', ""):
                 package = 'realsense2_camera'
                 launch_name = 'rs_camera.launch.py'
-                launch_arguments={
+                launch_arguments = {
                     'camera_name': sensor.get('name', ''),
                     'camera_params_file': sensor.get('config_file_path', PathJoinSubstitution([FindPackageShare(package), 'params', 'default.yaml']))
                 }
             if 'livox' == sensor.get('type', ""):
                 package = 'livox_ros_driver2'
                 launch_name = 'msg_MID360_launch.py'
-                launch_arguments={
+                launch_arguments = {
                     'livox_name': sensor.get('name', '')
+                }
+            if 'lx_camera' == sensor.get('type', ""):
+                package = 'lx_camera_ros'
+                launch_name = 'lx_camera_ros.launch.py'
+                launch_arguments = {
+                    'camera_name': sensor.get('name', ''),
+                    'camera_params_file': sensor.get('config_file_path', PathJoinSubstitution([FindPackageShare(package), 'params', 'default.yaml']))
                 }
 
             sensor_driver_launch = IncludeLaunchDescription(
@@ -86,25 +99,26 @@ def launch_setup(context: launch.LaunchContext, ld):
             print(f"Error: Don't have support for this sensor.")
     # #}
 
+
 def generate_launch_description():
     ld = launch.LaunchDescription()
 
     # #{ sensors start config
-    
+
     ld.add_action(DeclareLaunchArgument(
         'sensors_start_file',
         default_value='',
         description='Path to config file for start sensors.'
     ))
-    
+
     # #}
 
     # #{ opaque function
-    
+
     ld.add_action(
         OpaqueFunction(function=launch_setup, args=[ld])
     )
-    
+
     # #}
 
     return ld

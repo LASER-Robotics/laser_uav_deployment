@@ -9,3 +9,7 @@
         type: "realsense"
         transform: [0.08,0.0,0.0,0.0,0.0,0.0]
 
+      - name: "s11_front"
+        type: "lx_camera"
+        transform: [0.08,0.0,0.0,0.0,0.0,0.0]
+
